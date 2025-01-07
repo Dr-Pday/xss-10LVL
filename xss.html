@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10 Level XSS Challenge</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 2rem;
+        }
+
+        .level-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .level-item {
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px;
+            width: 300px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .level-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .level-item h3 {
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .level-item p {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .level-container {
+            display: none;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .level-container.active {
+            display: block;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>10 Level XSS Challenge</h1>
+
+    <!-- Level List -->
+    <ul class="level-list">
+        <li class="level-item" onclick="goToLevel(1)">
+            <h3>Level 1: Reflected XSS</h3>
+            <p>Click to start the challenge.</p>
+        </li>
+        <li class="level-item" onclick="goToLevel(2)">
+            <h3>Level 2: Stored XSS</h3>
+            <p>Click to start the challenge.</p>
+        </li>
+        <li class="level-item" onclick="goToLevel(3)">
+            <h3>Level 3: DOM-based XSS</h3>
+            <p>Click to start the challenge.</p>
+        </li>
+        <li class="level-item" onclick="goToLevel(4)">
+            <h3>Level 4: XSS with Event Handlers</h3>
+            <p>Click to start the challenge.</p>
+        </li>
+        <li class="level-item" onclick="goToLevel(5)">
+            <h3>Level 5: XSS with URL Encoding</h3>
+            <p>Click to start the challenge.</p>
+        </li>
+        <li class="level-item" onclick="goToLevel(6)">
+            <h3>Level 6: XSS with JSON Injection</h3>
+            <p>Click to start the challenge.</p>
+        </li>
+        <li class="level-item" onclick="goToLevel(7)">
+            <h3>Level 7: XSS via SVG Manipulation</h3>
+            <p>Click to start the challenge.</p>
+        </li>
+        <li class="level-item" onclick="goToLevel(8)">
+            <h3>Level 8: XSS with WebSockets</h3>
+            <p>Click to start the challenge.</p>
+        </li>
+        <li class="level-item" onclick="goToLevel(9)">
+            <h3>Level 9: XSS with iFrames</h3>
+            <p>Click to start the challenge.</p>
+        </li>
+        <li class="level-item" onclick="goToLevel(10)">
+            <h3>Level 10: XSS via Browser Extensions</h3>
+            <p>Click to start the challenge.</p>
+        </li>
+    </ul>
+
+    <!-- Level Containers -->
+    <div class="level-container" id="level1-container">
+        <h3>Level 1: Reflected XSS</h3>
+        <p>Enter a payload to trigger an alert:</p>
+        <form id="form1">
+            <input type="text" id="input1" />
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="level-container" id="level2-container">
+        <h3>Level 2: Stored XSS</h3>
+        <p>Enter a payload to store and trigger an alert:</p>
+        <form id="form2">
+            <input type="text" id="input2" />
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="level-container" id="level3-container">
+        <h3>Level 3: DOM-based XSS</h3>
+        <p>Enter a payload to trigger an alert:</p>
+        <form>
+            <input type="text" id="input3" />
+            <button type="button" onclick="processInput(3)">Submit</button>
+        </form>
+    </div>
+
+    <div class="level-container" id="level4-container">
+        <h3>Level 4: XSS with Event Handlers</h3>
+        <p>Enter a payload that exploits an event handler to trigger an alert:</p>
+        <form id="form4">
+            <input type="text" id="input4" />
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="level-container" id="level5-container">
+        <h3>Level 5: XSS with URL Encoding</h3>
+        <p>Enter a payload using URL encoding to trigger an alert:</p>
+        <form id="form5">
+            <input type="text" id="input5" />
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="level-container" id="level6-container">
+        <h3>Level 6: XSS with JSON Injection</h3>
+        <p>Enter a payload to trigger an alert in a JSON context:</p>
+        <form id="form6">
+            <input type="text" id="input6" />
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="level-container" id="level7-container">
+        <h3>Level 7: XSS via SVG Manipulation</h3>
+        <p>Enter a payload to inject JavaScript through an SVG image:</p>
+        <form id="form7">
+            <input type="text" id="input7" />
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="level-container" id="level8-container">
+        <h3>Level 8: XSS with WebSockets</h3>
+        <p>Enter a payload to trigger an alert using WebSockets:</p>
+        <form id="form8">
+            <input type="text" id="input8" />
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="level-container" id="level9-container">
+        <h3>Level 9: XSS with iFrames</h3>
+        <p>Enter a payload to trigger an alert using an iframe:</p>
+        <form id="form9">
+            <input type="text" id="input9" />
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="level-container" id="level10-container">
+        <h3>Level 10: XSS via Browser Extensions</h3>
+        <p>Enter a payload to trigger an alert that exploits browser extension vulnerabilities:</p>
+        <form id="form10">
+            <input type="text" id="input10" />
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        // Function to show the correct level based on the clicked item
+        function goToLevel(level) {
+            // Hide all level containers
+            for (let i = 1; i <= 10; i++) {
+                document.getElementById("level" + i + "-container").classList.remove("active");
+            }
+            // Show the selected level container
+            document.getElementById("level" + level + "-container").classList.add("active");
+        }
+
+        // Level 3: DOM-based XSS
+        function processInput(level) {
+            const input = document.getElementById("input" + level).value;
+            document.body.innerHTML += input; // Potential XSS vulnerability here
+        }
+    </script>
+
+</body>
+</html>
